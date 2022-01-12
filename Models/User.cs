@@ -9,6 +9,7 @@ public class User
   [BsonIgnore]
   public string? Id { get; set; }
 
-  public string Title { get; set; } = null!;
-  public string Note { get; set; } = String.Empty; public string Date { get; set; } = null!;
+  public string? Title { get; set; }
+
+  public string Note { get; set; } = string.Empty; public string Date { get; set; } = null!;
 }
