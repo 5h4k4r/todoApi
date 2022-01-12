@@ -2,11 +2,14 @@ using TodoApi.Models;
 using TodoApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
+using MongoDB.Bson;
 
 namespace TodoApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class TodosController : ControllerBase
 {
   private readonly TodosService _todosService;
@@ -17,8 +20,9 @@ public class TodosController : ControllerBase
   public async Task<List<Todo>> Get() =>
       await _todosService.GetAsync();
 
+
   [HttpGet("{id:length(24)}")]
-  public async Task<ActionResult<Todo>> Get(string id)
+  public async Task<ActionResult<Todo>> Get([StringLength(24, MinimumLength = 24)] string id)
   {
     var todo = await _todosService.GetAsync(id);
 
@@ -28,6 +32,13 @@ public class TodosController : ControllerBase
     }
 
     return todo;
+  }
+
+  [HttpGet]
+  [AllowAnonymous]
+  public ActionResult<BsonDocument> GetNice()
+  {
+    return Ok(new BsonDocument());
   }
 
   [AllowAnonymous]
